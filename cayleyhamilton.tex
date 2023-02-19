@@ -1,0 +1,203 @@
+% Cayley-Hamilton
+% By John Peloquin
+\documentclass[letterpaper]{article}
+\usepackage{amsmath,amssymb,amsthm,fourier}
+
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\after}{\circ}
+\newcommand{\mult}{\cdot}
+\newcommand{\eprod}{\wedge}
+\newcommand{\bigeprod}{\bigwedge}
+\newcommand{\medeprod}{{\textstyle\bigeprod}}
+\newcommand{\bprod}{\mathbin{\square}}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Det}{Det}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\Adj}{Adj}
+
+\newcommand{\delete}{\widehat}
+\newcommand{\sign}[1]{(-1)^{#1}}
+\newcommand{\multi}[4]{#2_{#3}#1\cdots#1#2_{#4}}
+\newcommand{\eprods}[3]{\multi{\eprod}{#1}{#2}{#3}}
+\newcommand{\bprods}[3]{\multi{\bprod}{#1}{#2}{#3}}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{quest}{Question}
+
+\theoremstyle{plain}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+
+\title{Mixed up with Cayley and Hamilton (draft)}
+\author{John Peloquin}
+
+\begin{document}
+\maketitle
+\section*{Introduction}
+In~\cite{bapatroy}, Bapat and Roy proved the Cayley-Hamilton theorem for mixed discriminants using graph-theoretic methods. In this paper, we provide a proof of the theorem in the simpler case of commuting linear transformations using results from mixed exterior algebra as developed by Greub and Vanstone in \cite{greub} and~\cite{greubvanstone}. It is a question whether a similar approach can be used in the noncommutative case.
+
+Throughout this paper, \(\F\)~is a field of characteristic zero, \(V\)~is an \(n\)-dimensional vector space over~\(\F\), and \(\iota\)~is the identity transformation on~\(V\).
+
+\section*{Determinants}
+We start with a generalization of the exterior powers of a linear transformation:
+\begin{defn}
+The \(p\)-ary \emph{box product} of linear transformations \(\varphi_1,\ldots,\varphi_p\) of~\(V\) is the linear transformation \(\bprods{\varphi}{1}{p}\) of~\(\medeprod^p V\) satisfying
+\begin{align}
+(\bprods{\varphi}{1}{p})(\eprods{x}{1}{p})&=\sum_{\sigma\in S_p}\sign{\sigma}\varphi_1x_{\sigma(1)}\eprod\cdots\eprod\varphi_p x_{\sigma(p)}\notag\\
+	&=\sum_{\sigma\in S_p}\varphi_{\sigma(1)}x_1\eprod\cdots\eprod\varphi_{\sigma(p)}x_p\label{eq:bprod}
+\end{align}
+\end{defn}
+\noindent If \(\varphi\)~is a linear transformation of~\(V\), it follows from~\eqref{eq:bprod} that
+\begin{equation}
+\medeprod^p\varphi=\frac{1}{p!}\,\underbrace{\bprods{\varphi}{}{}}_{p\text{ factors}}\label{eq:eprodbprod}
+\end{equation}
+Using the box product, we obtain a generalization of the determinant:
+\begin{defn}
+The \emph{mixed determinant}\footnote{This is also called a \emph{mixed discriminant}, and historically was called a \emph{cubic}, \emph{3-dimensional}, or \emph{3-way} determinant. It is sometimes divided by~\(n!\). See \cite{bapat}, \cite{muirmetzler}, and \cite{scott}.} of linear transformations \(\varphi_1,\ldots,\varphi_n\) of~\(V\) is the scalar
+\begin{equation}
+\Det(\varphi_1,\ldots,\varphi_n)=\tr(\bprods{\varphi}{1}{n})\label{eq:mdet}
+\end{equation}
+\end{defn}
+\noindent If \(\Delta\)~is a determinant function on~\(V\) with \(\Delta(x_1,\ldots,x_n)=1\), then
+\begin{equation}
+\Det(\varphi_1,\ldots,\varphi_n)=\sum_{\sigma\in S_n}\Delta(\varphi_{\sigma(1)}x_1,\ldots,\varphi_{\sigma(n)}x_n)\label{eq:mdete}
+\end{equation}
+It follows from \eqref{eq:eprodbprod} and~\eqref{eq:mdet} and the fact that \(\det\varphi=\tr(\medeprod^n\varphi)\), or from~\eqref{eq:mdete}, that
+\begin{equation}
+\det\varphi=\frac{1}{n!}\Det(\varphi,\ldots,\varphi)\label{eq:detmdet}
+\end{equation}
+
+\section*{Adjoints}
+We also have a generalization of the classical adjoint:
+\begin{defn}
+The \emph{mixed adjoint} of linear transformations \(\varphi_1,\ldots,\varphi_{n-1}\) of~\(V\) is the linear transformation of~\(V\) given by
+\begin{equation}
+\Adj(\varphi_1,\ldots,\varphi_{n-1})=D(\bprods{\varphi}{1}{n-1})\label{eq:madj}
+\end{equation}
+where \(D\)~is the mixed Poincar\'e dual map.\footnote{See \cite{greub}, Chapter~7.}
+\end{defn}
+\noindent Again if \(\Delta(x_1,\ldots,x_n)=1\), then
+\begin{equation}
+\Adj(\varphi_1,\ldots,\varphi_{n-1})x=\sum_{\sigma\in S_n}\Delta(\underbrace{\varphi_{\sigma(1)}x_1,\ldots,x}_{\sigma^{-1}(n)},\ldots,\varphi_{\sigma(n)}x_n)x_{\sigma^{-1}(n)}\label{eq:madje}
+\end{equation}
+\noindent It follows from \eqref{eq:madj} or~\eqref{eq:madje} that the classical adjoint is given by
+\begin{equation}
+\adj\varphi=\frac{1}{(n-1)!}\Adj(\varphi,\ldots,\varphi)\label{eq:adjmadj}
+\end{equation}
+A fundamental relationship between the mixed adjoint and the mixed determinant is found in:
+\begin{thm}
+For linear transformations \(\varphi_1,\ldots,\varphi_n\) of~\(V\),
+\begin{align}
+\Det(\varphi_1,\ldots,\varphi_n)\iota&=\sum_{i=1}^n\Adj(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)\after\varphi_i\label{eq:mdetmadjr}\\
+	&=\sum_{i=1}^n\varphi_i\after\Adj(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)\label{eq:mdetmadjl}
+\end{align}
+where \(\delete{\varphi_i}\)~denotes deletion of~\(\varphi_i\).
+\end{thm}
+\noindent This theorem follows from the Greub-Vanstone identity in~\cite{greubvanstone} and has the following familiar corollary by \eqref{eq:detmdet} and~\eqref{eq:adjmadj}:
+\begin{cor}
+For a linear transformation \(\varphi\) of~\(V\),
+\begin{equation}
+(\adj\varphi)\varphi=(\det\varphi)\iota=\varphi(\adj\varphi)\label{eq:detadj}
+\end{equation}
+\end{cor}
+
+\section*{Cayley-Hamilton}
+The classical Cayley-Hamilton theorem says that a linear transformation satisfies its own characteristic equation:
+\begin{defn}
+The \emph{characteristic polynomial} of a linear transformation \(\varphi\) of~\(V\) is the polynomial~\(\chi_{\varphi}\) given by\footnote{In~\eqref{eq:charpoly}, \(\chi_{\varphi}\)~is defined as a polynomial function in the scalar~\(\lambda\), which is equivalent to a polynomial in an indeterminate~\(\lambda\) since \(\F\)~is infinite.}
+\begin{equation}
+\chi_{\varphi}(\lambda)=\det(\varphi-\lambda\iota)\qquad(\lambda\in\F)\label{eq:charpoly}
+\end{equation}
+and the \emph{characteristic equation} of~\(\varphi\) is
+\begin{equation}
+\chi_{\varphi}(\lambda)=0\label{eq:char}
+\end{equation}
+\end{defn}
+\begin{thm}[Cayley-Hamilton]
+For a linear transformation \(\varphi\) of~\(V\),
+\begin{equation}
+\chi_{\varphi}(\varphi)=0\label{eq:ch}
+\end{equation}
+\end{thm}
+\noindent This can be proved by applying~\eqref{eq:detadj} to \(\varphi-\lambda\iota\), establishing a relationship between adjoint and characteristic coefficients, and summing up the results to obtain zero. All of these ideas can be generalized:
+\begin{defn}
+The \emph{mixed characteristic polynomial} of linear transformations \(\varphi_1,\ldots,\varphi_n\) of~\(V\) is the polynomial~\(\chi_{\varphi_1\cdots\varphi_n}\) given by
+\begin{equation}
+\chi_{\varphi_1\cdots\varphi_n}(\lambda_1,\ldots,\lambda_n)=\Det(\varphi_1-\lambda_1\iota,\ldots,\varphi_n-\lambda_n\iota)\qquad(\lambda_i\in\F)\label{eq:mcharpoly}
+\end{equation}
+and the \emph{mixed characteristic equation} of \(\varphi_1,\ldots,\varphi_n\) is
+\begin{equation}
+\chi_{\varphi_1\cdots\varphi_n}(\lambda_1,\ldots,\lambda_n)=0\label{eq:mchar}
+\end{equation}
+\end{defn}
+\noindent By multilinearity of~\(\Det\), \(\chi_{\varphi_1\cdots\varphi_n}\)~is a polynomial function in the scalars \(\lambda_1,\ldots,\lambda_n\), which is equivalent to a polynomial in \emph{commuting} indeterminates \(\lambda_1,\ldots,\lambda_n\) since the field \(\F\)~is infinite. For this reason, we state a mixed Cayley-Hamilton theorem for commuting linear transformations:
+\begin{thm}
+For commuting linear transformations \(\varphi_1,\ldots,\varphi_n\) of~\(V\),
+\begin{equation}
+\chi_{\varphi_1\cdots\varphi_n}(\varphi_1,\ldots,\varphi_n)=0\label{eq:mch}
+\end{equation}
+\end{thm}
+\noindent Before proving this theorem, we write
+\begin{equation}
+\chi_{\varphi_1\cdots\varphi_n}(\lambda_1,\ldots,\lambda_n)=\sum_{b\in 2^n}\sign{b}C_b(\varphi_1,\ldots,\varphi_n)\lambda_1^{b_1}\cdots\lambda_n^{b_n}\label{eq:mcharpolye}
+\end{equation}
+where \(\sign{b}=(-1)^{b_1+\cdots+b_n}\) and
+\begin{equation}
+C_b(\varphi_1,\ldots,\varphi_n)=\Det(\varphi_1^{1-b_1},\ldots,\varphi_n^{1-b_n})\label{eq:mcharcoeff}
+\end{equation}
+We call the scalars~\eqref{eq:mcharcoeff} \emph{mixed characteristic coefficients}.
+
+We also write
+\begin{multline}
+\Adj(\varphi_1-\lambda_1\iota,\ldots,\delete{\varphi_i-\lambda_i\iota},\ldots,\varphi_n-\lambda_n\iota)=\\
+\sum_{\delete{b}\in 2^{n-1}}\sign{\delete{b}}A_{\delete{b}}(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)\lambda_1^{b_1}\cdots\delete{\lambda_i^{b_i}}\cdots\lambda_n^{b_n}\label{eq:mcharadje}
+\end{multline}
+where \(\delete{b}=(b_1,\ldots,\delete{b_i},\ldots,b_n)\) and
+\begin{equation}
+A_{\delete{b}}(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)=\Adj(\varphi_1^{1-b_1},\ldots,\delete{\varphi_i^{1-b_i}},\ldots,\varphi_n^{1-b_n})\label{eq:mcharadjcoeff}
+\end{equation}
+We call the linear transformations~\eqref{eq:mcharadjcoeff} \emph{mixed adjoint coefficients}. To prove the mixed Cayley-Hamilton theorem, we establish a relationship between these and the mixed characteristic coefficients:
+\begin{proof}
+Substituting \(\varphi_1,\ldots,\varphi_n\) for \(\lambda_1,\ldots,\lambda_n\) in~\eqref{eq:mcharpolye}, we obtain
+\begin{equation}
+\chi_{\varphi_1\cdots\varphi_n}(\varphi_1,\ldots,\varphi_n)=\sum_{b\in 2^n}\sign{b}C_b(\varphi_1,\ldots,\varphi_n)\iota\after\varphi_1^{b_1}\cdots\varphi_n^{b_n}\label{eq:mcharpolys}
+\end{equation}
+On the other hand, it follows from~\eqref{eq:mdetmadjr}, \eqref{eq:mcharcoeff}, and \eqref{eq:mcharadjcoeff} that
+\begin{equation}
+C_b(\varphi_1,\ldots,\varphi_n)\iota=\sum_{i=1}^nA_{\delete{b}}(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)\after\varphi_i^{1-b_i}\label{eq:mcharadjcoeffs}
+\end{equation}
+Now it follows from \eqref{eq:mcharpolys} and~\eqref{eq:mcharadjcoeffs} that
+\begin{align}
+\chi_{\varphi_1\cdots\varphi_n}(\varphi_1,\ldots,\varphi_n)&=\sum_{i=1}^n\sum_{b\in 2^n}\sign{b}A_{\delete{b}}(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)\after\varphi_1^{b_1}\cdots\varphi_i\cdots\varphi_n^{b_n}\notag\\
+	&=\sum_{i=1}^n\sum_{\delete{b}\in 2^{n-1}}\sign{\delete{b}}\Biggl(A_{\delete{b}}(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)\after\varphi_1^{b_1}\cdots\varphi_i\cdots\varphi_n^{b_n}\notag\\
+	&=\qquad\qquad\qquad-A_{\delete{b}}(\varphi_1,\ldots,\delete{\varphi_i},\ldots,\varphi_n)\after\varphi_1^{b_1}\cdots\varphi_i\cdots\varphi_n^{b_n}\Biggr)\notag\\
+	&=0
+\end{align}
+which completes the proof.
+\end{proof}
+\noindent By \eqref{eq:detmdet}, \eqref{eq:charpoly}, and~\eqref{eq:mcharpoly} we have
+\begin{equation}
+\chi_{\varphi}(\lambda)=\frac{1}{n!}\chi_{\varphi\cdots\varphi}(\lambda,\ldots,\lambda)
+\end{equation}
+so \eqref{eq:ch} follows from~\eqref{eq:mch} and the classical Cayley-Hamilton theorem is a special case of the mixed Cayley-Hamilton theorem.
+
+\section*{Conclusion}
+We conclude with a question:
+\begin{quest}
+Can a similar approach be used to prove the mixed Cayley-Hamilton theorem for possibly noncommuting linear transformations?
+\end{quest}
+\noindent Greub and Vanstone only developed mixed exterior algebra over an arbitrary field of characteristic zero, and commutativity of the scalars in a field forced us to use commuting indeterminates in the mixed characteristic polynomial~\eqref{eq:mcharpoly}, which in turn limited us to commuting transformations in~\eqref{eq:mch}. But perhaps there is some way to extend these ideas to the noncommutative case.
+
+\begin{thebibliography}{0}
+\bibitem{bapat} Bapat, R. ``Mixed Discriminants of Positive Semidefinite Matrices''. 1989.
+\bibitem{bapatroy} Bapat, R. and Roy, S. ``Cayley-Hamilton Theorem for Mixed Discriminants''. 2015.
+\bibitem{greub} Greub, W. \textit{Multilinear Algebra}, 2nd~ed. 1978.
+\bibitem{greubvanstone} Greub, W. and Vanstone, J. ``A Basic Identity in Mixed Exterior Algebra''. 1987.
+\bibitem{muirmetzler} Muir, T. and Metzler, W. \textit{A Treatise on the Theory of Determinants}. 1933.
+\bibitem{scott} Scott, R. \textit{A Treatise on the Theory of Determinants}. 1880.
+\end{thebibliography}
+\end{document}
